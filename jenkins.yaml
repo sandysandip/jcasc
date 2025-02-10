@@ -1,0 +1,47 @@
+jenkins:
+  systemMessage: "Jenkins Configured as Code - Multiple Pipelines Example"
+  numExecutors: 2
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "admin_yahipassword"
+          Name: "Admin User"
+        - id: "developer1"
+          password: "dev1_password"
+          Name: "Developer One"
+        - id: "developer2"
+          password: "dev2_password"
+          Name: "Developer Two"
+        - id: "sandip"
+          password: "azure"
+          Name: "Sandip Singh"
+        - id: "garvit"
+          password: "azure123"
+          Name: "Garvit Singh"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything: {}
+
+
+jobs:
+  - script: >
+      folder('testjobs')
+  - script: >
+      pipelineJob('testjobs/default-agent') {
+        definition {
+          cps {
+            script("""\
+              pipeline {
+                agent any
+                stages {
+                  stage ('test') {
+                    steps {
+                      echo "hello"
+                    }
+                  }
+                }
+              }""".stripIndent())
+          }
+        }
+      }
